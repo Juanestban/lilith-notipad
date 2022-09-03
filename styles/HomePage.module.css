@@ -1,0 +1,11 @@
+.titleNotesEmpty {
+  color: #919191;
+}
+
+.article {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: dense;
+  grid-auto-rows: 12rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+}

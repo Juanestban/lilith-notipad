@@ -1,0 +1,7 @@
+.baseInput {
+  border-radius: 5px;
+  border: 1px solid gray;
+  background-color: transparent;
+  color: var(--white);
+  padding: 5px 7px;
+}

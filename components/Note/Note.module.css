@@ -1,0 +1,44 @@
+.container {
+  border: 1px solid gray;
+  border-radius: 5px;
+  height: 100%;
+  position: relative;
+}
+
+.container:focus {
+  background-color: rgba(0, 153, 255, 0.3);
+}
+
+.container h3 {
+  margin: 0;
+}
+
+.container p {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title {
+  position: relative;
+}
+
+.title span {
+  position: absolute;
+  font-size: 0.8rem;
+  color: gray;
+  right: 5px;
+  top: 5px;
+}
+
+.link {
+  padding: 10px;
+  color: inherit;
+}
+
+.buttonDeleteNote {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}

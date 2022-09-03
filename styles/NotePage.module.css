@@ -1,0 +1,26 @@
+.containerButtons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.containerLabel label {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.input {
+  margin-top: 5px;
+}
+
+.input.textarea {
+  border-radius: 5px;
+  border: 1px solid gray;
+  background-color: transparent;
+  color: var(--white);
+  padding: 5px 7px;
+  height: 500px;
+}
