@@ -53,7 +53,7 @@ const NotePage: NextPage<NotePageProps> = ({ idNote }) => {
     <section>
       <div className={s.containerButtons}>
         <Link href="/" onClick={handleClear}>
-          go home
+          <a>go home</a>
         </Link>
         <Button variant="danger" onClick={handleRemove(idNote)}>
           delete

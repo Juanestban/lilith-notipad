@@ -72,6 +72,7 @@ function NoteProvider({ children }: NoteProviderProps) {
 
   const handleChange = (event: FormEvent<HTMLInputElement>) => {
     const { value } = event.target as HTMLInputElement;
+    console.log(value);
     setNoteForm(value);
   };
 

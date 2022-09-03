@@ -1,6 +1,4 @@
 import { FC } from "react";
-import Link from "next/link";
-import cn from "classnames";
 import { useRouter } from "next/router";
 
 import { Note as INote } from "@lilith/interfaces";
@@ -16,26 +14,29 @@ interface NoteProps extends INote {
 const Note: FC<NoteProps> = ({ id, title, description }) => {
   const navigate = useRouter();
   const { handleDelete } = useNoteContext();
-  const classes = cn(s.title);
 
   const handleRemove = (id: number | undefined) => () => {
     id && handleDelete(id);
     navigate.push("/home");
   };
 
+  const handleNavigation = () => {
+    navigate.push(`/note/${id}`);
+  };
+
   return (
     <div className={s.container} tabIndex={0}>
-      <Link
-        href={`/note/${id}`}
+      <div
         className={s.link}
         style={{ height: "100%", display: "block" }}
+        onClick={handleNavigation}
       >
-        <h3 className={classes}>
+        <h3 className={s.title}>
           {title}
           <span>{id}</span>
         </h3>
         <p>{description}</p>
-      </Link>
+      </div>
       <Button
         className={s.buttonDeleteNote}
         variant="danger"
