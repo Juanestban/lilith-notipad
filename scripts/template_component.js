@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 const template = ({ css_file, component_name }) =>
   `import { FC } from 'react';
 import cn from 'classnames';

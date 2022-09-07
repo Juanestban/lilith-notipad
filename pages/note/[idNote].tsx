@@ -1,13 +1,13 @@
-import { useEffect, FormEvent } from "react";
-import { NextPage } from "next";
-import Link from "next/link";
-import cn from "classnames";
-import { useRouter } from "next/router";
+import { useEffect, FormEvent } from 'react';
+import { NextPage } from 'next';
+import Link from 'next/link';
+import cn from 'classnames';
+import { useRouter } from 'next/router';
 
-import { Button, Input } from "@lilith/components";
-import { useNoteContext } from "@lilith/contexts";
+import { Button, Input } from '@lilith/components';
+import { useNoteContext } from '@lilith/contexts';
 
-import s from "../../styles/NotePage.module.css";
+import s from '../../styles/NotePage.module.css';
 
 interface NotePageProps {
   idNote?: string;
@@ -15,14 +15,7 @@ interface NotePageProps {
 
 const NotePage: NextPage<NotePageProps> = ({ idNote }) => {
   const navigate = useRouter();
-  const {
-    notes,
-    noteToEdit,
-    handleEdit,
-    handleSet,
-    handleClear,
-    handleDelete,
-  } = useNoteContext();
+  const { notes, noteToEdit, handleEdit, handleSet, handleClear, handleDelete } = useNoteContext();
 
   const handleChange = (event: FormEvent) => {
     const { name, value } = event.target as HTMLInputElement;
@@ -31,17 +24,17 @@ const NotePage: NextPage<NotePageProps> = ({ idNote }) => {
     idNote && handleEdit({ id: idNumber, name, value });
   };
 
-  const handleRemove = (id: string | undefined) => () => {
+  const handleRemove = (id: string | undefined) => async () => {
     const idNormal = Number(id);
 
     id && handleDelete(idNormal);
-    navigate.push("/home");
+    await navigate.push('/home');
   };
 
   useEffect(() => {
     const idNormal = Number(idNote);
     const filtered = notes.find((n) => n.id === idNormal);
-    if (filtered) {
+    if (filtered != null) {
       console.log(filtered);
       const { title, description } = filtered;
       handleSet({ id: idNormal, title, description });
@@ -59,18 +52,11 @@ const NotePage: NextPage<NotePageProps> = ({ idNote }) => {
           delete
         </Button>
       </div>
-      <hr style={{ borderColor: "gray", marginTop: 10, marginBottom: 20 }} />
+      <hr style={{ borderColor: 'gray', marginTop: 10, marginBottom: 20 }} />
       <div className={s.containerLabel}>
         <label>
           title:
-          <Input
-            type="text"
-            name="title"
-            value={noteToEdit.title}
-            className={s.input}
-            autoComplete="off"
-            onChange={handleChange}
-          />
+          <Input type="text" name="title" value={noteToEdit.title} className={s.input} />
         </label>
         <label>
           description:

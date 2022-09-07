@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 const path = require('path');
 const fs = require('fs');
 const { template } = require('./template_component');
@@ -44,10 +46,7 @@ if (!fs.existsSync(folder)) {
 }
 
 // component.tsx
-fs.writeFileSync(
-  `${component}.tsx`,
-  template({ css_file, component_name: nameComponent })
-);
+fs.writeFileSync(`${component}.tsx`, template({ css_file, component_name: nameComponent }));
 
 // index.ts
 fs.writeFileSync(

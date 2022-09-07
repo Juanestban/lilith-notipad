@@ -1,0 +1,4 @@
+.next
+node_modules
+.prettierchache
+next-env.d.ts

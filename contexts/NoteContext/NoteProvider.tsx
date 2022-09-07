@@ -1,21 +1,15 @@
-import {
-  useState,
-  createContext,
-  useContext,
-  ReactNode,
-  FormEvent,
-} from "react";
-import { Note } from "@lilith/interfaces";
-import { getId } from "@lilith/utils/getId";
-import { mockFc } from "@lilith/utils/mocks";
+import { useState, createContext, useContext, ReactNode, FormEvent } from 'react';
+import { Note } from '@lilith/interfaces';
+import { getId } from '@lilith/utils/getId';
+import { mockFc } from '@lilith/utils/mocks';
 
-type Edit = {
+interface Edit {
   id: number;
   name: string;
   value: string;
-};
+}
 
-type NoteContextProps = {
+interface NoteContextProps {
   noteForm: string;
   noteToEdit: Note;
   notes: Note[];
@@ -25,7 +19,7 @@ type NoteContextProps = {
   handleEdit: (noteToEdit: Edit) => void;
   handleSet: (note: Note) => void;
   handleDelete: (id: number) => void;
-};
+}
 
 interface NoteProviderProps {
   children: ReactNode;
@@ -33,12 +27,12 @@ interface NoteProviderProps {
 
 const NOTE_TEMPLATE: Note = {
   id: 0,
-  title: "",
-  description: "",
+  title: '',
+  description: '',
 };
 
 const NoteContext = createContext<NoteContextProps>({
-  noteForm: "",
+  noteForm: '',
   noteToEdit: NOTE_TEMPLATE,
   notes: [],
   handleChange: mockFc,
@@ -49,10 +43,10 @@ const NoteContext = createContext<NoteContextProps>({
   handleDelete: mockFc,
 });
 
-const keystorage = "@LILITH_NOTE";
+const keystorage = '@LILITH_NOTE';
 
 function NoteProvider({ children }: NoteProviderProps) {
-  const [noteForm, setNoteForm] = useState("");
+  const [noteForm, setNoteForm] = useState('');
   const [noteToEdit, setNoteToEdit] = useState<Note>(NOTE_TEMPLATE);
   const [notes, setNotes] = useState<Note[]>(() => {
     const itemNotes = window.localStorage.getItem(keystorage);
@@ -77,22 +71,20 @@ function NoteProvider({ children }: NoteProviderProps) {
   };
 
   const handleAdd = () => {
-    if (noteForm !== "") {
+    if (noteForm !== '') {
       const newNote: Note = {
         id: getId(),
         title: noteForm,
-        description: "",
+        description: '',
       };
 
       handleStorage([...notes, newNote]);
-      setNoteForm("");
+      setNoteForm('');
     }
   };
 
   const handleEdit = ({ id, name, value }: Edit) => {
-    const updatedNotes = notes.map((note) =>
-      note.id === id ? { ...note, [name]: value } : note
-    );
+    const updatedNotes = notes.map((note) => (note.id === id ? { ...note, [name]: value } : note));
     handleStorage(updatedNotes);
     setNoteToEdit({ ...noteToEdit, [name]: value });
   };

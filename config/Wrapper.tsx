@@ -1,8 +1,8 @@
-import { useEffect, FormEvent, ReactNode } from "react";
-import { useRouter } from "next/router";
-import { useNoteContext } from "@lilith/contexts";
+import { useEffect, FormEvent, ReactNode } from 'react';
+import { useRouter } from 'next/router';
+import { useNoteContext } from '@lilith/contexts';
 
-import { Input, Button } from "@lilith/components";
+import { Input, Button } from '@lilith/components';
 
 interface WrapperProps {
   children: ReactNode;
@@ -19,7 +19,7 @@ export const Wrapper = ({ children }: WrapperProps) => {
 
   useEffect(() => {
     console.log(handleAdd);
-    pathname === "/" && navigate.push("/home");
+    pathname === '/' && navigate.push('/home');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.href]);
 
@@ -28,13 +28,7 @@ export const Wrapper = ({ children }: WrapperProps) => {
       <header role="navigation">
         <div className="container-form-input">
           <form onSubmit={handleSubmit}>
-            <Input
-              type="text"
-              className="input-note"
-              placeholder="title of note"
-              value={noteForm}
-              onChange={handleChange}
-            />
+            <Input type="text" className="input-note" placeholder="title of note" value={noteForm} onChange={handleChange} />
             <Button className="button-note-save">save note</Button>
           </form>
         </div>
