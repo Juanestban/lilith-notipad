@@ -41,10 +41,10 @@
     "typescript": "*"
   },
   "lint-staged": {
-    "*/**/*.{js|jsx|ts|tsx}": [
+    "*/**/*.{js,jsx,ts,tsx}": [
       "eslint --cache --fix",
       "prettier --cache --write"
     ],
-    "*/**/*.{css|md|mdn}": "prettier --write"
+    "*/**/*.{css,md,mdn}": "prettier --write"
   }
 }
