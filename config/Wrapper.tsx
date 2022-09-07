@@ -18,7 +18,6 @@ export const Wrapper = ({ children }: WrapperProps) => {
   };
 
   useEffect(() => {
-    console.log(handleAdd);
     pathname === '/' && navigate.push('/home');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.href]);

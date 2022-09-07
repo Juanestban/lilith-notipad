@@ -9,35 +9,31 @@ import { useNoteContext } from '@lilith/contexts';
 
 import s from '../../styles/NotePage.module.css';
 
-interface NotePageProps {
-  idNote?: string;
-}
-
-const NotePage: NextPage<NotePageProps> = ({ idNote }) => {
-  const navigate = useRouter();
+const NotePage: NextPage = () => {
+  const { query, ...navigate } = useRouter();
+  const { idNote } = query as { idNote: string | undefined };
   const { notes, noteToEdit, handleEdit, handleSet, handleClear, handleDelete } = useNoteContext();
 
   const handleChange = (event: FormEvent) => {
     const { name, value } = event.target as HTMLInputElement;
-    const idNumber = Number(idNote);
 
-    idNote && handleEdit({ id: idNumber, name, value });
+    idNote && handleEdit({ id: Number(idNote), name, value });
   };
 
   const handleRemove = (id: string | undefined) => async () => {
-    const idNormal = Number(id);
-
-    id && handleDelete(idNormal);
+    id && handleDelete(Number(id));
     await navigate.push('/home');
   };
 
   useEffect(() => {
-    const idNormal = Number(idNote);
-    const filtered = notes.find((n) => n.id === idNormal);
-    if (filtered != null) {
-      console.log(filtered);
+    const normalizedId = Number(idNote);
+    const filtered = notes.find((n) => {
+      return n.id === normalizedId;
+    });
+
+    if (filtered) {
       const { title, description } = filtered;
-      handleSet({ id: idNormal, title, description });
+      handleSet({ id: normalizedId, title, description });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idNote]);
