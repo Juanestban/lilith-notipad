@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { AppProps } from 'next/app';
-import { NoteProvider } from '@lilith/contexts';
+import { NoteProvider, SessionProvider } from '@lilith/contexts';
 import { Wrapper } from '@lilith/config/Wrapper';
 
 import '../styles/globals.css';
@@ -16,11 +16,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <main className="main-container">
-      <NoteProvider>
-        <Wrapper>
-          <Component {...pageProps} />
-        </Wrapper>
-      </NoteProvider>
+      <SessionProvider>
+        <NoteProvider>
+          <Wrapper>
+            <Component {...pageProps} />
+          </Wrapper>
+        </NoteProvider>
+      </SessionProvider>
     </main>
   );
 }

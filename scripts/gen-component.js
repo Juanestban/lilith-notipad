@@ -13,20 +13,19 @@ const [, , nameComponent, flagType] = process.argv;
  * @param {string} flagType
  * @returns string
  */
-const getValFromFlag = (flagType = '') => {
+const getValFromFlag = (flagType = '--type=components') => {
   const [, value] = flagType.toLowerCase().split('=');
   return value;
 };
 
 const static_type_file = {
   component: 'components',
-  view: 'views',
+  pages: 'pages',
 };
 
 const path_generated = ({ folder = '', component_name = '' }) =>
   path.join(
     process.cwd(),
-    'apps/notipad/src/app',
     static_type_file[getValFromFlag(flagType)],
     folder, // will be the folder component with the same name of the component
     component_name
