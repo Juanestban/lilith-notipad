@@ -1,10 +1,10 @@
-import { FC, forwardRef, DetailedHTMLProps, HTMLAttributes } from 'react';
+import { FC, forwardRef, DetailedHTMLProps, ButtonHTMLAttributes } from 'react';
 import cn from 'classnames';
 
 import s from './Button.module.css';
 
-interface ButtonProps extends DetailedHTMLProps<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger';
+interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'danger';
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ children, variant = 'primary', className, ...props }, ref) => {

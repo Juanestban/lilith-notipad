@@ -11,6 +11,7 @@ const nextConfig = {
   env: {
     MONGODB_ATLAS_USERNAME: process.env.MONGODB_ATLAS_USERNAME,
     MONGODB_ATLAS_PASSWORD: process.env.MONGODB_ATLAS_PASSWORD,
+    JWT_PASSWORD: process.env.JWT_PASSWORD,
   },
 };
 

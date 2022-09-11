@@ -1,6 +1,8 @@
 import { Schema, model, models } from 'mongoose';
 
-const EpicSchema = new Schema({
+import { removeIdDefault } from '@lilith/utils/removeIdDefault';
+
+const EpicSchemaBase = new Schema({
   title: {
     type: String,
     require: true,
@@ -8,13 +10,7 @@ const EpicSchema = new Schema({
   description: String,
 });
 
-EpicSchema.set('toJSON', {
-  transform: (_, returnedObject) => {
-    returnedObject.id = returnedObject._id;
-    delete returnedObject._id;
-    delete returnedObject.__v;
-  },
-});
+const EpicSchema = removeIdDefault(EpicSchemaBase);
 
 const Epic = models.Epics || model('Epics', EpicSchema);
 

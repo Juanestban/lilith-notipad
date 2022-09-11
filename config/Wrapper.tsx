@@ -1,5 +1,5 @@
-import { useEffect, FormEvent, ReactNode } from 'react';
-import { useRouter } from 'next/router';
+import { FormEvent, ReactNode } from 'react';
+// import { useRouter } from 'next/router';
 import { useNoteContext } from '@lilith/contexts';
 
 import { Input, Button } from '@lilith/components';
@@ -9,7 +9,7 @@ interface WrapperProps {
 }
 
 export const Wrapper = ({ children }: WrapperProps) => {
-  const { pathname, ...navigate } = useRouter();
+  // const { pathname } = useRouter();
   const { noteForm, handleAdd, handleChange } = useNoteContext();
 
   const handleSubmit = (event: FormEvent) => {
@@ -17,10 +17,10 @@ export const Wrapper = ({ children }: WrapperProps) => {
     handleAdd();
   };
 
-  useEffect(() => {
-    pathname === '/' && navigate.push('/home');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.href]);
+  // useEffect(() => {
+  //   pathname === '/' && navigate.push('/home');
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [location.href]);
 
   return (
     <>

@@ -22,9 +22,10 @@
       "@lilith/contexts": ["./contexts"],
       "@lilith/hooks": ["./hooks"],
       "@lilith/interfaces": ["./interfaces"],
+      "@lilith/middlewares/*": ["./middlewares/*"],
       "@lilith/models": ["./models"],
-      "@lilith/styles/*": ["./styles/*"],
-      "@lilith/utils/*": ["./utils/*"]
+      "@lilith/utils/*": ["./utils/*"],
+      "@lilith/libs/*": ["./libs/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
