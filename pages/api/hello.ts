@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   if (req.method === 'POST') {
-    const epicNote = new Epic(JSON.parse(req.body));
+    const epicNote = new Epic(req.body);
 
     const savedEpicNote = await epicNote.save();
 
