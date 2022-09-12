@@ -1,14 +1,17 @@
 import { useState, ChangeEvent } from 'react';
+import httpClient from '@lilith/libs/httpClient';
 import cs from 'classnames';
 
 import { UserSessionValidation } from '@lilith/interfaces';
 import { Button, ButtonIcon, Input } from '@lilith/components';
+import { useToggle } from '@lilith/hooks/useToggle';
+import { useSession } from '@lilith/contexts';
 
 import s from '../styles/LoginPage.module.css';
-import { useToggle } from '@lilith/hooks/useToggle';
 
 export default function LoginPage() {
   const [session, setSession] = useState<UserSessionValidation>({ username: '', password: '' });
+  const { handleUser } = useSession();
   const { toggle: isLogin, handleToggle } = useToggle(true);
   const { toggle: isHidden, handleToggle: handleHidden } = useToggle(true);
   const titleForm = isLogin ? 'login' : 'register';
@@ -18,9 +21,18 @@ export default function LoginPage() {
     setSession({ ...session, [name]: value });
   };
 
-  const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('submit', session);
+
+    console.log(session);
+    if (!isLogin && session.username && session.password) {
+      try {
+        const { data: user } = await httpClient.post('/users', session);
+        handleUser(user);
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   return (
@@ -34,7 +46,7 @@ export default function LoginPage() {
         </div>
         <div className={cs(s.formControl, s.containerPassword)}>
           <Input className={s.input} type={isHidden ? 'password' : 'text'} placeholder="password" name="password" onChange={handleChange} />
-          <ButtonIcon icon={isHidden ? 'FiEyeOff' : 'FiEye'} onClick={handleHidden} />
+          <ButtonIcon type="button" icon={isHidden ? 'FiEyeOff' : 'FiEye'} onClick={handleHidden} />
         </div>
         <div className={cs(s.formControl, s.actionButtons)}>
           <Button variant="secondary" type="submit" className={s.button}>

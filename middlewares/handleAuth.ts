@@ -1,19 +1,20 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-
+import type { NextApiRequest, NextApiResponse } from 'next';
 import jwt, { Secret } from 'jsonwebtoken';
 
-export const handleAuth = (req: NextRequest) => {
-  const { headers, method, url } = req;
-  const path = new URL(url).pathname;
-  const authorization = headers.get('authorization');
+import { forbidden } from './forbidden';
+
+const pathsWithoutAuth = ['login', 'users'];
+
+export const handleAuth = (req: NextApiRequest) => {
+  const { headers, method, url: path } = req;
+  const { authorization } = headers;
 
   const { JWT_PASSWORD } = process.env;
   let token = '';
   let decodedToken: any = {};
-  const pathname = path.substring(1);
+  const pathname = path?.replace('/api/', '');
 
-  if ((pathname === 'users' && method === 'POST') || pathname === 'login') return NextResponse.next();
+  if (method === 'POST' && pathsWithoutAuth.includes(pathname ?? '')) return { status: 200, isUnauthorizated: false };
 
   if (authorization?.toLowerCase().startsWith('bearer')) {
     token = authorization.substring(7);
@@ -21,13 +22,21 @@ export const handleAuth = (req: NextRequest) => {
 
   try {
     decodedToken = jwt.verify(token, JWT_PASSWORD as Secret);
-  } catch {}
+  } catch {
+    return { status: 403, isUnauthorizated: true };
+  }
 
-  if (!token || !decodedToken.id)
-    return new Response(JSON.stringify({ error: 401, message: 'token missing or invalid' }), {
-      status: 401,
-      headers: { 'content-type': 'application/json' },
-    }).json();
-
-  return NextResponse.next();
+  if (!token || !decodedToken.id) return { status: 403, isUnauthorizated: true };
 };
+
+export const withAuth =
+  <T extends Function>(callback: T) =>
+  (req: NextApiRequest, res: NextApiResponse) => {
+    const auth = handleAuth(req);
+
+    if (auth?.isUnauthorizated) {
+      return forbidden(res);
+    }
+
+    return callback(req, res);
+  };
