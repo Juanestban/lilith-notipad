@@ -10,12 +10,9 @@ const httpServer = <T = NextApiRequest | EpicApiRequest>(
 ) => {
   const switcherMethods = methods[method as MethodName];
 
-  if (switcherMethods) {
-    switcherMethods(req, res);
-    return;
-  }
+  if (switcherMethods) return switcherMethods(req, res);
 
-  res.status(404).json({ message: 'this method dont exist' });
+  return res.status(404).json({ message: 'this method dont exist' });
 };
 
 export default httpServer;
