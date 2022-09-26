@@ -1,11 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+
 import { Epic } from '@lilith/models/Epic';
+import { withAuth } from '@lilith/middlewares/handleAuth';
 
 interface Data {
   name: string;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<Data | any>) {
+async function handler(req: NextApiRequest, res: NextApiResponse<Data | any>) {
   if (req.method === 'GET') {
     return res.status(200).json({ name: 'John Doe' });
   }
@@ -20,3 +22,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   return res.status(200).json({ name: 'hellow!' });
 }
+
+export default withAuth(handler);

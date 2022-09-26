@@ -1,7 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-export type MethodName = 'GET' | 'POST' | 'PUT' | 'PATH' | 'DELETE';
+import type { EpicApiRequest } from '@lilith/interfaces';
 
-export type LilithMethods = {
-  [methods in MethodName]: (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
+export type MethodName = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
+export type LilithMethods<T = NextApiRequest | EpicApiRequest> = {
+  [methods in MethodName]: (req: T, res: NextApiResponse) => Promise<void> | void;
 };

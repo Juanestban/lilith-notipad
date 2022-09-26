@@ -1,32 +1,13 @@
-import { useState, createContext, useContext, ReactNode, FormEvent } from 'react';
-import { Note } from '@lilith/interfaces';
-import { getId } from '@lilith/utils/getId';
+import { useState, useEffect, createContext, useContext, FormEvent } from 'react';
+
+import httpClient from '@lilith/libs/httpClient';
+import { Note, NoteContextProps, NoteProviderProps, Edit } from '@lilith/interfaces';
 import { mockFc } from '@lilith/utils/mocks';
-
-interface Edit {
-  id: number;
-  name: string;
-  value: string;
-}
-
-interface NoteContextProps {
-  noteForm: string;
-  noteToEdit: Note;
-  notes: Note[];
-  handleChange: (event: FormEvent<HTMLInputElement>) => void;
-  handleAdd: () => void;
-  handleClear: () => void;
-  handleEdit: (noteToEdit: Edit) => void;
-  handleSet: (note: Note) => void;
-  handleDelete: (id: number) => void;
-}
-
-interface NoteProviderProps {
-  children: ReactNode;
-}
+import { debounce } from '@lilith/utils/debounce';
+import { useSession } from '../SessionContext';
 
 const NOTE_TEMPLATE: Note = {
-  id: 0,
+  id: '',
   title: '',
   description: '',
 };
@@ -43,61 +24,90 @@ const NoteContext = createContext<NoteContextProps>({
   handleDelete: mockFc,
 });
 
-const keystorage = '@LILITH_NOTE';
-
 function NoteProvider({ children }: NoteProviderProps) {
   const [noteForm, setNoteForm] = useState('');
   const [noteToEdit, setNoteToEdit] = useState<Note>(NOTE_TEMPLATE);
-  const [notes, setNotes] = useState<Note[]>(() => {
-    const itemNotes = window.localStorage.getItem(keystorage);
-
-    if (itemNotes !== null) {
-      const notesTransformed = JSON.parse(itemNotes) as Note[];
-      return notesTransformed;
-    }
-
-    return [];
-  });
-
-  const handleStorage = (notes: Note[]) => {
-    setNotes(notes);
-    window.localStorage.setItem(keystorage, JSON.stringify(notes));
-  };
+  const [notes, setNotes] = useState<Note[]>([]);
+  const { user } = useSession();
+  const { token } = user;
 
   const handleChange = (event: FormEvent<HTMLInputElement>) => {
     const { value } = event.target as HTMLInputElement;
-    console.log(value);
+
     setNoteForm(value);
   };
 
-  const handleAdd = () => {
-    if (noteForm !== '') {
-      const newNote: Note = {
-        id: getId(),
-        title: noteForm,
-        description: '',
-      };
+  const handleAdd = async () => {
+    if (noteForm !== '' && token) {
+      try {
+        const newNote: Note = { title: noteForm, description: '' };
 
-      handleStorage([...notes, newNote]);
-      setNoteForm('');
+        const { data: noteCreated } = await httpClient.post('epics', newNote, { headers: { Authorization: `Bearer ${token}` } });
+
+        setNotes([...notes, noteCreated]);
+
+        setNoteForm('');
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const updateEpicNote = async (note: Note) => {
+    try {
+      if (token) {
+        const { data: noteUpdated } = await httpClient.patch(`/epics/${note.id}`, note, { headers: { Authorization: `Bearer ${token}` } });
+        const filteredEpics = notes.map((n) => {
+          return n.id === noteUpdated.id ? noteUpdated : n;
+        });
+
+        console.log('petition', noteUpdated);
+        setNotes(filteredEpics);
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const handleEdit = ({ id, name, value }: Edit) => {
-    const updatedNotes = notes.map((note) => (note.id === id ? { ...note, [name]: value } : note));
-    handleStorage(updatedNotes);
     setNoteToEdit({ ...noteToEdit, [name]: value });
+
+    debounce(() => updateEpicNote({ ...noteToEdit, id, [name]: value }));
   };
 
   const handleSet = (note: Note) => setNoteToEdit(note);
 
   const handleClear = () => setNoteToEdit(NOTE_TEMPLATE);
 
-  const handleDelete = (id: number) => {
-    const notesFiltered = notes.filter((n) => n.id !== id);
+  const handleDelete = async (id: string) => {
+    try {
+      if (token) {
+        await httpClient.delete(`/epics/${id}`, { headers: { Authorization: `Bearer ${token}` } });
 
-    handleStorage(notesFiltered);
+        const newEpics = notes.filter((n) => n.id !== id);
+
+        setNotes(newEpics);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  const gettingEpicsNote = async () => {
+    try {
+      if (token) {
+        const { data: notes } = await httpClient.get('/epics', { headers: { Authorization: `Bearer ${token}` } });
+        setNotes(notes);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    gettingEpicsNote();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   return (
     <NoteContext.Provider

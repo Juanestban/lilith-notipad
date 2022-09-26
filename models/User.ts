@@ -8,12 +8,17 @@ const UserSchemaBase = new Schema({
     require: true,
     unique: true,
   },
-  password: {
+  passwordHashed: {
     type: String,
     require: true,
-    unique: true,
   },
-  description: String,
+  rol: {
+    type: String,
+    require: true,
+    uppercase: true,
+    unum: ['GOD', 'HUMAN'],
+    default: 'HUMAN',
+  },
 });
 
 const UserSchema = removeIdDefault(UserSchemaBase);

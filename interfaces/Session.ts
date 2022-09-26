@@ -12,6 +12,7 @@ export interface UserSession {
   username: string;
   rol: UserRol;
   password?: string;
+  token?: string;
 }
 
 export interface SessionContextProps {
