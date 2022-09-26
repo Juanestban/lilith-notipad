@@ -1,0 +1,28 @@
+GET http://localhost:3000/api/epics
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld1VzZXIiLCJyb2wiOiJIVU1BTiIsImlkIjoiNjMzMGY5Y2Y2NWU0NjM1ODY3OGI1YzZlIiwiaWF0IjoxNjY0MTU0MDY0fQ.IrbN3Jh4HE1ECzhZZrmS3csSnrSnVV4FZBLHvFy02Zs
+
+###
+
+POST http://localhost:3000/api/epics
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld1VzZXIiLCJyb2wiOiJIVU1BTiIsImlkIjoiNjMzMGY5Y2Y2NWU0NjM1ODY3OGI1YzZlIiwiaWF0IjoxNjY0MTU0MDY0fQ.IrbN3Jh4HE1ECzhZZrmS3csSnrSnVV4FZBLHvFy02Zs
+
+{
+  "title": "i'm a second title in to the mongoAtlas",
+  "description": "i will the second description"
+}
+
+###
+PATCH http://localhost:3000/api/epics/633105c665e46358678b5c72
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld1VzZXIiLCJyb2wiOiJIVU1BTiIsImlkIjoiNjMzMGY5Y2Y2NWU0NjM1ODY3OGI1YzZlIiwiaWF0IjoxNjY0MTU0MDY0fQ.IrbN3Jh4HE1ECzhZZrmS3csSnrSnVV4FZBLHvFy02Zs
+
+{
+  "title": "i am a note updated",
+  "description": "description updated"
+}
+
+###
+
+DELETE http://localhost:3000/api/epics/633105c665e46358678b5c72
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld1VzZXIiLCJyb2wiOiJIVU1BTiIsImlkIjoiNjMzMGY5Y2Y2NWU0NjM1ODY3OGI1YzZlIiwiaWF0IjoxNjY0MTU0MDY0fQ.IrbN3Jh4HE1ECzhZZrmS3csSnrSnVV4FZBLHvFy02Zs

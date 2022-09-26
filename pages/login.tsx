@@ -1,16 +1,20 @@
 import { useState, ChangeEvent } from 'react';
-import httpClient from '@lilith/libs/httpClient';
+import { useRouter } from 'next/router';
 import cs from 'classnames';
+import httpClient from '@lilith/libs/httpClient';
 
-import { UserSessionValidation } from '@lilith/interfaces';
+import { UserSession, UserSessionValidation } from '@lilith/interfaces';
 import { Button, ButtonIcon, Input } from '@lilith/components';
 import { useToggle } from '@lilith/hooks/useToggle';
 import { useSession } from '@lilith/contexts';
+import { LOCAL_STORAGE_TOKEN } from '@lilith/config/constants';
 
 import s from '../styles/LoginPage.module.css';
 
 export default function LoginPage() {
   const [session, setSession] = useState<UserSessionValidation>({ username: '', password: '' });
+  const [loading, setLoading] = useState(false);
+  const { push } = useRouter();
   const { handleUser } = useSession();
   const { toggle: isLogin, handleToggle } = useToggle(true);
   const { toggle: isHidden, handleToggle: handleHidden } = useToggle(true);
@@ -21,15 +25,30 @@ export default function LoginPage() {
     setSession({ ...session, [name]: value });
   };
 
+  const petition = (): Promise<{ data: Omit<UserSession, 'password'> }> => httpClient.post(isLogin ? '/session' : '/users', session);
+
   const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(session);
-    if (!isLogin && session.username && session.password) {
+    // const MAX_NUMBER_CHARACTER = 8; // val.length >= MAX_NUMBER_CHARACTER
+    const isFullField = Object.entries(session)
+      .map(([_, value]) => value)
+      .every((val: string) => val !== '');
+    console.log('clicked', isFullField);
+
+    if (isFullField) {
       try {
-        const { data: user } = await httpClient.post('/users', session);
+        setLoading(true);
+
+        const { data: user } = await petition();
+
+        setLoading(false);
         handleUser(user);
+        window.localStorage.setItem(LOCAL_STORAGE_TOKEN, user.token as string);
+
+        await push('/home');
       } catch (err) {
+        setLoading(false);
         console.log(err);
       }
     }
@@ -49,7 +68,7 @@ export default function LoginPage() {
           <ButtonIcon type="button" icon={isHidden ? 'FiEyeOff' : 'FiEye'} onClick={handleHidden} />
         </div>
         <div className={cs(s.formControl, s.actionButtons)}>
-          <Button variant="secondary" type="submit" className={s.button}>
+          <Button variant="secondary" type="submit" className={s.button} isLoading={loading}>
             send
           </Button>
           <Button variant="tertiary" type="button" className={s.button} onClick={handleToggle}>

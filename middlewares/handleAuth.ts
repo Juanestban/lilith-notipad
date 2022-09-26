@@ -27,6 +27,8 @@ export const handleAuth = (req: NextApiRequest) => {
   }
 
   if (!token || !decodedToken.id) return { status: 403, isUnauthorizated: true };
+
+  return { decodedToken };
 };
 
 export const withAuth =
@@ -38,5 +40,6 @@ export const withAuth =
       return forbidden(res);
     }
 
-    return callback(req, res);
+    // eslint-disable-next-line n/no-callback-literal
+    return callback({ ...req, authJwt: auth.decodedToken }, res);
   };

@@ -59,3 +59,12 @@
   border-color: #960a0a;
   color: #960a0a;
 }
+
+.baseButton.disabled {
+  cursor: not-allowed;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.baseButton.disabled:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
