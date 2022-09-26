@@ -25,10 +25,7 @@ const Note: FC<NoteProps> = ({ id, title, description }) => {
   return (
     <div className={s.container} tabIndex={0}>
       <div className={s.link} style={{ height: '100%', display: 'block' }} onClick={handleNavigation}>
-        <h3 className={s.title}>
-          {title}
-          <span>{id}</span>
-        </h3>
+        <h3 className={s.title}>{title}</h3>
         <p>{description}</p>
       </div>
       <Button className={s.buttonDeleteNote} variant="danger" onClick={handleRemove(id)}>

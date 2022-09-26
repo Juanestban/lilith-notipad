@@ -22,14 +22,6 @@
   position: relative;
 }
 
-.title span {
-  position: absolute;
-  font-size: 0.8rem;
-  color: gray;
-  right: 5px;
-  top: 5px;
-}
-
 .link {
   padding: 10px;
   color: inherit;
