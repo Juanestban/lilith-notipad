@@ -17,23 +17,20 @@ const NotePage: NextPage = () => {
   const handleChange = (event: FormEvent) => {
     const { name, value } = event.target as HTMLInputElement;
 
-    idNote && handleEdit({ id: Number(idNote), name, value });
+    idNote && handleEdit({ id: idNote, name, value });
   };
 
   const handleRemove = (id: string | undefined) => async () => {
-    id && handleDelete(Number(id));
+    id && handleDelete(id);
     await navigate.push('/home');
   };
 
   useEffect(() => {
-    const normalizedId = Number(idNote);
-    const filtered = notes.find((n) => {
-      return n.id === normalizedId;
-    });
+    const filtered = notes.find((n) => n.id === idNote);
 
     if (filtered) {
       const { title, description } = filtered;
-      handleSet({ id: normalizedId, title, description });
+      handleSet({ id: idNote, title, description });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idNote]);
@@ -41,8 +38,8 @@ const NotePage: NextPage = () => {
   return (
     <section>
       <div className={s.containerButtons}>
-        <Link href="/" onClick={handleClear}>
-          <a>go home</a>
+        <Link href="/home">
+          <a onClick={handleClear}>go home</a>
         </Link>
         <Button variant="danger" onClick={handleRemove(idNote)}>
           delete
@@ -52,16 +49,17 @@ const NotePage: NextPage = () => {
       <div className={s.containerLabel}>
         <label>
           title:
-          <Input type="text" name="title" value={noteToEdit.title} className={s.input} />
+          <Input type="text" name="title" value={noteToEdit.title} className={s.input} onChange={handleChange} />
         </label>
         <label>
           description:
+          {/* resolve error with this input */}
           <textarea
             name="description"
             className={cn(s.input, s.textarea)}
             value={noteToEdit.description}
             autoComplete="off"
-            onChange={handleChange}
+            onInput={handleChange}
           ></textarea>
         </label>
       </div>

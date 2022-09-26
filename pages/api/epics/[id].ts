@@ -11,10 +11,9 @@ const PATCH = async (req: EpicApiRequest, res: NextApiResponse) => {
     const { id: userId } = authJwt;
     const { id: idNote } = query;
 
-    const note = await Epic.findByIdAndUpdate(idNote, body).where('userId').equals(userId);
-    const { title, description } = note;
+    await Epic.findByIdAndUpdate(idNote, body).where('userId').equals(userId);
 
-    return res.status(200).json({ id: idNote, title, description, userId });
+    return res.status(200).json({ id: idNote, ...body, userId });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: 'error to try to update your note' });

@@ -15,10 +15,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   const getClientAndSession = async () => {
     const token = window.localStorage.getItem(LOCAL_STORAGE_TOKEN);
     const isLogged = !token ? '/login' : '/home';
-    const pageUnavalaible = ['/', '/login'];
+    const pageUnavalaible = ['/', '/_error', '/login'];
 
     if (token && pageUnavalaible.includes(pathname)) {
       await push('/home');
+      setIsSideClient(false);
       return;
     }
 

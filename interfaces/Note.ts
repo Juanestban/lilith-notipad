@@ -1,14 +1,14 @@
 import { ReactNode, FormEvent } from 'react';
 
 export interface Note {
-  id?: number;
+  id?: string;
   title: string;
   description: string;
   userId?: string;
 }
 
 export interface Edit {
-  id: number;
+  id: string;
   name: string;
   value: string;
 }
@@ -22,7 +22,7 @@ export interface NoteContextProps {
   handleClear: () => void;
   handleEdit: (noteToEdit: Edit) => void;
   handleSet: (note: Note) => void;
-  handleDelete: (id: number) => void;
+  handleDelete: (id: string) => void;
 }
 
 export interface NoteProviderProps {

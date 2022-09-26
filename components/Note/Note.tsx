@@ -13,13 +13,13 @@ const Note: FC<NoteProps> = ({ id, title, description }) => {
   const navigate = useRouter();
   const { handleDelete } = useNoteContext();
 
-  const handleRemove = (id: number | undefined) => async () => {
+  const handleRemove = (id: string | undefined) => async () => {
     id && handleDelete(id);
     await navigate.push('/home');
   };
 
   const handleNavigation = async () => {
-    id && (await navigate.push(`/note/${id}`));
+    id && (await navigate.push({ pathname: '/note/[idNote]', query: { idNote: id } }));
   };
 
   return (

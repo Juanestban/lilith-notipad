@@ -3,10 +3,11 @@ import { useState, useEffect, createContext, useContext, FormEvent } from 'react
 import httpClient from '@lilith/libs/httpClient';
 import { Note, NoteContextProps, NoteProviderProps, Edit } from '@lilith/interfaces';
 import { mockFc } from '@lilith/utils/mocks';
+import { debounce } from '@lilith/utils/debounce';
 import { useSession } from '../SessionContext';
 
 const NOTE_TEMPLATE: Note = {
-  id: 0,
+  id: '',
   title: '',
   description: '',
 };
@@ -52,19 +53,44 @@ function NoteProvider({ children }: NoteProviderProps) {
     }
   };
 
+  const updateEpicNote = async (note: Note) => {
+    try {
+      if (token) {
+        const { data: noteUpdated } = await httpClient.patch(`/epics/${note.id}`, note, { headers: { Authorization: `Bearer ${token}` } });
+        const filteredEpics = notes.map((n) => {
+          return n.id === noteUpdated.id ? noteUpdated : n;
+        });
+
+        console.log('petition', noteUpdated);
+        setNotes(filteredEpics);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleEdit = ({ id, name, value }: Edit) => {
-    // const updatedNotes = notes.map((note) => (note.id === id ? { ...note, [name]: value } : note));
-    // handleStorage(updatedNotes);
     setNoteToEdit({ ...noteToEdit, [name]: value });
+
+    debounce(() => updateEpicNote({ ...noteToEdit, id, [name]: value }));
   };
 
   const handleSet = (note: Note) => setNoteToEdit(note);
 
   const handleClear = () => setNoteToEdit(NOTE_TEMPLATE);
 
-  const handleDelete = (id: number) => {
-    // const notesFiltered = notes.filter((n) => n.id !== id);
-    // handleStorage(notesFiltered);
+  const handleDelete = async (id: string) => {
+    try {
+      if (token) {
+        await httpClient.delete(`/epics/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+
+        const newEpics = notes.filter((n) => n.id !== id);
+
+        setNotes(newEpics);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const gettingEpicsNote = async () => {
