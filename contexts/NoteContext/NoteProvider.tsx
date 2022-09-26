@@ -105,7 +105,9 @@ function NoteProvider({ children }: NoteProviderProps) {
   };
 
   useEffect(() => {
-    gettingEpicsNote();
+    if (token) {
+      gettingEpicsNote();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 

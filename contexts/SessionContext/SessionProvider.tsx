@@ -32,7 +32,9 @@ function SessionProvider({ children }: SessionProviderProps) {
   };
 
   useEffect(() => {
-    getUser();
+    const token = window.localStorage.getItem(LOCAL_STORAGE_TOKEN);
+
+    if (token) getUser();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
