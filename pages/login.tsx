@@ -34,7 +34,6 @@ export default function LoginPage() {
     const isFullField = Object.entries(session)
       .map(([_, value]) => value)
       .every((val: string) => val !== '');
-    console.log('clicked', isFullField);
 
     if (isFullField) {
       try {
