@@ -11,7 +11,6 @@ const GET = async (req: EpicApiRequest, res: NextApiResponse) => {
     const { id: userId } = authJwt;
     const epicNotes = await Epic.find({ userId });
 
-    console.log(epicNotes);
     return res.status(200).json(epicNotes ?? []);
   } catch (error) {
     console.log(error);

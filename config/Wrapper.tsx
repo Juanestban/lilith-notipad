@@ -9,18 +9,12 @@ interface WrapperProps {
 }
 
 export const Wrapper = ({ children }: WrapperProps) => {
-  // const { pathname } = useRouter();
   const { noteForm, handleAdd, handleChange } = useNoteContext();
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     handleAdd();
   };
-
-  // useEffect(() => {
-  //   pathname === '/' && navigate.push('/home');
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [location.href]);
 
   return (
     <>
