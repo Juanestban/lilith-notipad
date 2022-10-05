@@ -1,4 +1,6 @@
 import { FormEvent } from 'react';
+import Head from 'next/head';
+
 import { useNoteContext } from '@lilith/contexts';
 import { Input, Button, Note } from '@lilith/components';
 
@@ -14,6 +16,9 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>home - notipad</title>
+      </Head>
       <header role="navigation">
         <div className="container-form-input">
           <form onSubmit={handleSubmit}>
