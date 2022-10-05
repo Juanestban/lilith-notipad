@@ -1,8 +1,9 @@
 import { useEffect, FormEvent } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
-import cn from 'classnames';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
+import cn from 'classnames';
 
 import { Button, Input } from '@lilith/components';
 import { useNoteContext } from '@lilith/contexts';
@@ -37,9 +38,14 @@ const NotePage: NextPage = () => {
 
   return (
     <section>
+      <Head>
+        <title>{noteToEdit.title}</title>
+      </Head>
       <div className={s.containerButtons}>
         <Link href="/home">
-          <a onClick={handleClear}>go home</a>
+          <a className={s.linkToBack} onClick={handleClear}>
+            go home
+          </a>
         </Link>
         <Button variant="danger" onClick={handleRemove(idNote)}>
           delete

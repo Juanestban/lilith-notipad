@@ -13,21 +13,24 @@ const SessionContext = createContext<SessionContextProps>({
 
 function SessionProvider({ children }: SessionProviderProps) {
   const [user, setUser] = useState<UserSession>(USER_INITIAL_STATE);
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleUser = (user: UserSession) => setUser(user);
 
   const getUser = async () => {
     try {
+      setLoading(true);
       const token = window.localStorage.getItem(LOCAL_STORAGE_TOKEN);
 
       if (token) {
         const { data: user } = await httpClient.get('/users', { headers: { Authorization: `Bearer ${token}` } });
 
         handleUser({ ...user, token });
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 

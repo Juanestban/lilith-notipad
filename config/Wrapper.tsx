@@ -1,37 +1,30 @@
-import { FormEvent, ReactNode } from 'react';
-// import { useRouter } from 'next/router';
-import { useNoteContext, useSession } from '@lilith/contexts';
-
-import { Input, Button } from '@lilith/components';
+import { ReactNode } from 'react';
+import { useSession, useNoteContext } from '@lilith/contexts';
+import { Skeleton } from '@lilith/components';
 
 interface WrapperProps {
   children: ReactNode;
 }
 
 export const Wrapper = ({ children }: WrapperProps) => {
-  const { user } = useSession();
-  const { noteForm, handleAdd, handleChange } = useNoteContext();
-  const { token } = user;
+  const { loading: loadingUser } = useSession();
+  const { loading: loadingNotes } = useNoteContext();
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    handleAdd();
-  };
+  if (loadingUser || loadingNotes)
+    return (
+      <>
+        <div className="containerSearchSkeleton">
+          <Skeleton size={{ width: '100%', height: 50 }} />
+        </div>
+        <div className="containerSkeletonNotes">
+          {Array.from({ length: 8 })
+            .fill('')
+            .map((_, index) => (
+              <Skeleton key={index} size={{ width: '100%', height: '100%' }} />
+            ))}
+        </div>
+      </>
+    );
 
-  return (
-    <>
-      {token && (
-        <header role="navigation">
-          <div className="container-form-input">
-            <form onSubmit={handleSubmit}>
-              {/* resolve error with this input */}
-              <Input type="text" className="input-note" placeholder="title of note" value={noteForm} onInput={handleChange} />
-              <Button className="button-note-save">save note</Button>
-            </form>
-          </div>
-        </header>
-      )}
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };

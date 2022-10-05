@@ -24,9 +24,10 @@ const POST = async (req: EpicApiRequest, res: NextApiResponse) => {
     const { id } = authJwt;
     const epicNote = new Epic({ ...body, userId: id });
 
-    await epicNote.save();
+    const noteSaved = await epicNote.save();
+    const { createdAt, updatedAt } = noteSaved;
 
-    return res.status(200).json({ id: epicNote.id, ...body, userId: id });
+    return res.status(200).json({ id: epicNote.id, ...body, userId: id, createdAt, updatedAt });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: 'error to try to get your notes' });

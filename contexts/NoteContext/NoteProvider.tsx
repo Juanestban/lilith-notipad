@@ -16,6 +16,7 @@ const NoteContext = createContext<NoteContextProps>({
   noteForm: '',
   noteToEdit: NOTE_TEMPLATE,
   notes: [],
+  loading: false,
   handleChange: mockFc,
   handleAdd: mockFc,
   handleEdit: mockFc,
@@ -26,6 +27,7 @@ const NoteContext = createContext<NoteContextProps>({
 
 function NoteProvider({ children }: NoteProviderProps) {
   const [noteForm, setNoteForm] = useState('');
+  const [loading, setLoading] = useState(false);
   const [noteToEdit, setNoteToEdit] = useState<Note>(NOTE_TEMPLATE);
   const [notes, setNotes] = useState<Note[]>([]);
   const { user } = useSession();
@@ -44,13 +46,33 @@ function NoteProvider({ children }: NoteProviderProps) {
 
         const { data: noteCreated } = await httpClient.post('epics', newNote, { headers: { Authorization: `Bearer ${token}` } });
 
-        setNotes([...notes, noteCreated]);
+        setNotes([noteCreated, ...notes]);
 
         setNoteForm('');
       } catch (error) {
         console.error(error);
       }
     }
+  };
+
+  const sortNotes = (currentNotes: Note[]) => {
+    const prevNotes = [...currentNotes];
+    const sortedNotes = prevNotes.sort((prev, next) => {
+      const { updatedAt: prevUpdatedAt } = prev;
+      const { updatedAt: nextUpdatedAt } = next;
+
+      if (!prevUpdatedAt) return -1;
+      if (!nextUpdatedAt) return -1;
+
+      const comaparePrev = new Date(prevUpdatedAt).getTime();
+      const comaparenext = new Date(nextUpdatedAt).getTime();
+      console.log(comaparePrev, comaparenext);
+
+      return comaparenext - comaparePrev;
+    });
+    console.log('[+]', sortedNotes);
+
+    return sortedNotes;
   };
 
   const updateEpicNote = async (note: Note) => {
@@ -61,8 +83,8 @@ function NoteProvider({ children }: NoteProviderProps) {
           return n.id === noteUpdated.id ? noteUpdated : n;
         });
 
-        console.log('petition', noteUpdated);
-        setNotes(filteredEpics);
+        const sortedNotes = sortNotes(filteredEpics);
+        setNotes(sortedNotes);
       }
     } catch (error) {
       console.error(error);
@@ -96,11 +118,17 @@ function NoteProvider({ children }: NoteProviderProps) {
   const gettingEpicsNote = async () => {
     try {
       if (token) {
+        setLoading(true);
         const { data: notes } = await httpClient.get('/epics', { headers: { Authorization: `Bearer ${token}` } });
-        setNotes(notes);
+        const sortedNotes = sortNotes(notes);
+        console.log(sortedNotes);
+
+        setNotes(sortedNotes);
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -117,6 +145,7 @@ function NoteProvider({ children }: NoteProviderProps) {
         noteForm,
         notes,
         noteToEdit,
+        loading,
         handleChange,
         handleAdd,
         handleEdit,
