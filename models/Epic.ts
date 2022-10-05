@@ -2,17 +2,25 @@ import { Schema, model, models, Types } from 'mongoose';
 
 import { removeIdDefault } from '@lilith/utils/removeIdDefault';
 
-const EpicSchemaBase = new Schema({
-  title: {
-    type: String,
-    require: true,
+const EpicSchemaBase = new Schema(
+  {
+    title: {
+      type: String,
+      require: true,
+    },
+    description: String,
+    userId: {
+      type: Types.ObjectId,
+      require: true,
+    },
   },
-  description: String,
-  userId: {
-    type: Types.ObjectId,
-    require: true,
-  },
-});
+  {
+    timestamps: {
+      createdAt: true,
+      updatedAt: true,
+    },
+  }
+);
 
 const EpicSchema = removeIdDefault(EpicSchemaBase);
 

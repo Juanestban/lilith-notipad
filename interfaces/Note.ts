@@ -5,6 +5,8 @@ export interface Note {
   title: string;
   description: string;
   userId?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface Edit {
