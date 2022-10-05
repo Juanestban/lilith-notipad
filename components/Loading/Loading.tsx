@@ -1,9 +1,9 @@
 import { FC, CSSProperties } from 'react';
 import cs from 'classnames';
 
-import s from './Loading.module.css';
+import { Size } from '@lilith/interfaces';
 
-type Size = 'small' | 'middle' | 'large' | 'x-large';
+import s from './Loading.module.css';
 
 interface LoadingProps {
   size?: Size;

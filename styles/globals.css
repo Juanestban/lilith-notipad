@@ -111,3 +111,24 @@ header[role='navigation'] {
   justify-content: center;
   align-items: center;
 }
+
+.container-center-all {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerSearchSkeleton {
+  width: 100%;
+  height: 50px;
+  margin-bottom: 40px;
+  display: flex;
+}
+
+.containerSkeletonNotes {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: dense;
+  grid-auto-rows: 12rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+}

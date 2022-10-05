@@ -16,6 +16,7 @@ const NoteContext = createContext<NoteContextProps>({
   noteForm: '',
   noteToEdit: NOTE_TEMPLATE,
   notes: [],
+  loading: false,
   handleChange: mockFc,
   handleAdd: mockFc,
   handleEdit: mockFc,
@@ -26,6 +27,7 @@ const NoteContext = createContext<NoteContextProps>({
 
 function NoteProvider({ children }: NoteProviderProps) {
   const [noteForm, setNoteForm] = useState('');
+  const [loading, setLoading] = useState(false);
   const [noteToEdit, setNoteToEdit] = useState<Note>(NOTE_TEMPLATE);
   const [notes, setNotes] = useState<Note[]>([]);
   const { user } = useSession();
@@ -96,11 +98,14 @@ function NoteProvider({ children }: NoteProviderProps) {
   const gettingEpicsNote = async () => {
     try {
       if (token) {
+        setLoading(true);
         const { data: notes } = await httpClient.get('/epics', { headers: { Authorization: `Bearer ${token}` } });
         setNotes(notes);
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -117,6 +122,7 @@ function NoteProvider({ children }: NoteProviderProps) {
         noteForm,
         notes,
         noteToEdit,
+        loading,
         handleChange,
         handleAdd,
         handleEdit,

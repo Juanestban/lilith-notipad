@@ -16,6 +16,7 @@ export interface Edit {
 export interface NoteContextProps {
   noteForm: string;
   noteToEdit: Note;
+  loading: boolean;
   notes: Note[];
   handleChange: (event: FormEvent<HTMLInputElement>) => void;
   handleAdd: () => void;
