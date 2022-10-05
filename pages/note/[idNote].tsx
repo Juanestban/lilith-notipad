@@ -39,7 +39,9 @@ const NotePage: NextPage = () => {
     <section>
       <div className={s.containerButtons}>
         <Link href="/home">
-          <a onClick={handleClear}>go home</a>
+          <a className={s.linkToBack} onClick={handleClear}>
+            go home
+          </a>
         </Link>
         <Button variant="danger" onClick={handleRemove(idNote)}>
           delete
