@@ -20,6 +20,7 @@ export interface NoteContextProps {
   noteToEdit: Note;
   loading: boolean;
   notes: Note[];
+  loadingSpinner: boolean;
   handleChange: (event: FormEvent<HTMLInputElement>) => void;
   handleAdd: () => void;
   handleClear: () => void;

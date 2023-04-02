@@ -18,6 +18,7 @@ const NoteContext = createContext<NoteContextProps>({
   noteToEdit: NOTE_TEMPLATE,
   notes: [],
   loading: false,
+  loadingSpinner: false,
   handleChange: mockFc,
   handleAdd: mockFc,
   handleEdit: mockFc,
@@ -29,6 +30,7 @@ const NoteContext = createContext<NoteContextProps>({
 function NoteProvider({ children }: NoteProviderProps) {
   const [noteForm, setNoteForm] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingSpinner, setLoadingSpinner] = useState(false);
   const [noteToEdit, setNoteToEdit] = useState<Note>(NOTE_TEMPLATE);
   const [notes, setNotes] = useState<Note[]>([]);
   const { user } = useSession();
@@ -43,11 +45,13 @@ function NoteProvider({ children }: NoteProviderProps) {
   const handleAdd = async () => {
     if (noteForm !== '' && token) {
       try {
+        setLoadingSpinner(true);
         const newNote: Note = { title: noteForm, description: '' };
         const { data: noteCreated } = await httpClient.post('epics', newNote, { headers: { Authorization: `Bearer ${token}` } });
 
         setNotes([noteCreated, ...notes]);
         setNoteForm('');
+        setLoadingSpinner(false);
       } catch (error) {
         console.error(error);
       }
@@ -58,9 +62,7 @@ function NoteProvider({ children }: NoteProviderProps) {
     try {
       if (token) {
         const { data: noteUpdated } = await httpClient.patch(`/epics/${note.id}`, note, { headers: { Authorization: `Bearer ${token}` } });
-        const filteredEpics = notes.map((n) => {
-          return n.id === noteUpdated.id ? noteUpdated : n;
-        });
+        const filteredEpics = notes.map((note) => (note.id === noteUpdated.id ? noteUpdated : note));
 
         const sortedNotes = sortNotes(filteredEpics);
         setNotes(sortedNotes);
@@ -73,7 +75,10 @@ function NoteProvider({ children }: NoteProviderProps) {
   const handleEdit = ({ id, name, value }: Edit) => {
     setNoteToEdit({ ...noteToEdit, [name]: value });
 
-    debounce(() => updateEpicNote({ ...noteToEdit, id, [name]: value }));
+    debounce(() => {
+      setLoadingSpinner(true);
+      updateEpicNote({ ...noteToEdit, id, [name]: value }).then(() => setLoadingSpinner(false));
+    });
   };
 
   const handleSet = (note: Note) => setNoteToEdit(note);
@@ -111,9 +116,8 @@ function NoteProvider({ children }: NoteProviderProps) {
   };
 
   useEffect(() => {
-    if (token) {
-      gettingEpicsNote();
-    }
+    if (token) gettingEpicsNote();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
@@ -124,6 +128,7 @@ function NoteProvider({ children }: NoteProviderProps) {
         notes,
         noteToEdit,
         loading,
+        loadingSpinner,
         handleChange,
         handleAdd,
         handleEdit,
