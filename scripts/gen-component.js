@@ -13,7 +13,7 @@ const [, , nameComponent, flagType] = process.argv;
  * @param {string} flagType
  * @returns string
  */
-const getValFromFlag = (flagType = '--type=components') => {
+const getValFromFlag = (flagType = '--type=component') => {
   const [, value] = flagType.toLowerCase().split('=');
   return value;
 };
