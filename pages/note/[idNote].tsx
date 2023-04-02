@@ -67,7 +67,7 @@ const NotePage: NextPage = () => {
             autoComplete="off"
             onInput={handleChange}
           ></textarea>
-          {!loadingSpinner && <Spinner size={40} className={s.spinner} />}
+          {loadingSpinner && <Spinner size={40} className={s.spinner} />}
         </label>
       </div>
     </section>
