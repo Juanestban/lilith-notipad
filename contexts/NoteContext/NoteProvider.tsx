@@ -4,6 +4,7 @@ import httpClient from '@lilith/libs/httpClient';
 import { Note, NoteContextProps, NoteProviderProps, Edit } from '@lilith/interfaces';
 import { mockFc } from '@lilith/utils/mocks';
 import { debounce } from '@lilith/utils/debounce';
+import { sortNotes } from '@lilith/utils/sortNotes';
 import { useSession } from '../SessionContext';
 
 const NOTE_TEMPLATE: Note = {
@@ -43,36 +44,14 @@ function NoteProvider({ children }: NoteProviderProps) {
     if (noteForm !== '' && token) {
       try {
         const newNote: Note = { title: noteForm, description: '' };
-
         const { data: noteCreated } = await httpClient.post('epics', newNote, { headers: { Authorization: `Bearer ${token}` } });
 
         setNotes([noteCreated, ...notes]);
-
         setNoteForm('');
       } catch (error) {
         console.error(error);
       }
     }
-  };
-
-  const sortNotes = (currentNotes: Note[]) => {
-    const prevNotes = [...currentNotes];
-    const sortedNotes = prevNotes.sort((prev, next) => {
-      const { updatedAt: prevUpdatedAt } = prev;
-      const { updatedAt: nextUpdatedAt } = next;
-
-      if (!prevUpdatedAt) return -1;
-      if (!nextUpdatedAt) return -1;
-
-      const comaparePrev = new Date(prevUpdatedAt).getTime();
-      const comaparenext = new Date(nextUpdatedAt).getTime();
-      console.log(comaparePrev, comaparenext);
-
-      return comaparenext - comaparePrev;
-    });
-    console.log('[+]', sortedNotes);
-
-    return sortedNotes;
   };
 
   const updateEpicNote = async (note: Note) => {
@@ -121,7 +100,6 @@ function NoteProvider({ children }: NoteProviderProps) {
         setLoading(true);
         const { data: notes } = await httpClient.get('/epics', { headers: { Authorization: `Bearer ${token}` } });
         const sortedNotes = sortNotes(notes);
-        console.log(sortedNotes);
 
         setNotes(sortedNotes);
         setLoading(false);
