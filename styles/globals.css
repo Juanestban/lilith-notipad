@@ -92,18 +92,6 @@ header[role='navigation'] {
   width: 100%;
 }
 
-.input-note {
-  width: 80%;
-  font-size: large;
-  height: 50px;
-  margin-right: 10px;
-}
-
-.button-note-save {
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
 .container-loading {
   display: flex;
   width: 100%;
