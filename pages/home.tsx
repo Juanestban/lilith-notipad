@@ -2,12 +2,12 @@ import { FormEvent } from 'react';
 import Head from 'next/head';
 
 import { useNoteContext } from '@lilith/contexts';
-import { Input, Button, Note } from '@lilith/components';
+import { Input, Button, Note, Spinner } from '@lilith/components';
 
 import s from '../styles/HomePage.module.css';
 
 export default function Home() {
-  const { notes, noteForm, handleAdd, handleChange } = useNoteContext();
+  const { notes, noteForm, loadingSpinner, handleAdd, handleChange } = useNoteContext();
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -23,8 +23,11 @@ export default function Home() {
         <div className="container-form-input">
           <form onSubmit={handleSubmit}>
             {/* resolve error with this input */}
-            <Input type="text" className="input-note" placeholder="title of note" value={noteForm} onInput={handleChange} />
-            <Button className="button-note-save">save note</Button>
+            <div className={s.formNote}>
+              <Input type="text" className={s.inputNote} placeholder="title of note" value={noteForm} onInput={handleChange} />
+              {loadingSpinner && <Spinner size={30} className={s.spinner} />}
+            </div>
+            <Button className={s.buttonNoteSave}>save note</Button>
           </form>
         </div>
       </header>

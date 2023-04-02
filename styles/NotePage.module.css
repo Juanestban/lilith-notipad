@@ -29,3 +29,13 @@
   color: var(--white);
   text-decoration: underline;
 }
+
+.labelTextarea {
+  position: relative;
+}
+
+.spinner {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}

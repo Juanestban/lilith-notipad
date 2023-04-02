@@ -4,3 +4,4 @@ export * from './ButtonIcon';
 export * from './Note';
 export * from './Loading';
 export * from './Skeleton';
+export * from './Spinner';

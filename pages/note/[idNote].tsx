@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import cn from 'classnames';
 
-import { Button, Input } from '@lilith/components';
+import { Button, Input, Spinner } from '@lilith/components';
 import { useNoteContext } from '@lilith/contexts';
 
 import s from '../../styles/NotePage.module.css';
@@ -13,7 +13,7 @@ import s from '../../styles/NotePage.module.css';
 const NotePage: NextPage = () => {
   const { query, ...navigate } = useRouter();
   const { idNote } = query as { idNote: string | undefined };
-  const { notes, noteToEdit, handleEdit, handleSet, handleClear, handleDelete } = useNoteContext();
+  const { notes, noteToEdit, loadingSpinner, handleEdit, handleSet, handleClear, handleDelete } = useNoteContext();
 
   const handleChange = (event: FormEvent) => {
     const { name, value } = event.target as HTMLInputElement;
@@ -57,7 +57,7 @@ const NotePage: NextPage = () => {
           title:
           <Input type="text" name="title" value={noteToEdit.title} className={s.input} onChange={handleChange} />
         </label>
-        <label>
+        <label className={s.labelTextarea}>
           description:
           {/* resolve error with this input */}
           <textarea
@@ -67,6 +67,7 @@ const NotePage: NextPage = () => {
             autoComplete="off"
             onInput={handleChange}
           ></textarea>
+          {!loadingSpinner && <Spinner size={40} className={s.spinner} />}
         </label>
       </div>
     </section>

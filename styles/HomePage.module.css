@@ -1,3 +1,26 @@
+.formNote {
+  position: relative;
+  width: 80%;
+}
+
+.inputNote {
+  width: 100%;
+  font-size: large;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.spinner {
+  position: absolute;
+  right: 10px;
+  top: 20%;
+}
+
+.buttonNoteSave {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .titleNotesEmpty {
   color: #919191;
 }
@@ -8,4 +31,16 @@
   grid-auto-flow: dense;
   grid-auto-rows: 12rem;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+}
+
+@media screen and (max-width: 720px) {
+  .formNote {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .formNote {
+    width: 63%;
+  }
 }
