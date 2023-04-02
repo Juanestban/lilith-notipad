@@ -1,9 +1,5 @@
 import { Note } from '@lilith/interfaces';
 
-/*
- *
- */
-
 export const sortNotes = (currentNotes: Note[]) => {
   const newNotes = currentNotes.map(({ updatedAt, ...rest }) => ({ ...rest, updatedAt: updatedAt ?? new Date('2022-02-01') }));
   const sortedNotes = newNotes.sort((prev, next) => {
