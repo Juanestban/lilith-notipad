@@ -5,7 +5,7 @@ import { Note } from '@lilith/interfaces';
  */
 
 export const sortNotes = (currentNotes: Note[]) => {
-  const newNotes = currentNotes.map(({ updatedAt, ...rest }) => ({ ...rest, updatedAt: updatedAt ?? new Date('01-01-2022') }));
+  const newNotes = currentNotes.map(({ updatedAt, ...rest }) => ({ ...rest, updatedAt: updatedAt ?? new Date('2022-02-01') }));
   const sortedNotes = newNotes.sort((prev, next) => {
     const { updatedAt: prevUpdatedAt } = prev;
     const { updatedAt: nextUpdatedAt } = next;
