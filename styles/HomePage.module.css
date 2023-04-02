@@ -32,3 +32,15 @@
   grid-auto-rows: 12rem;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
 }
+
+@media screen and (max-width: 720px) {
+  .formNote {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .formNote {
+    width: 63%;
+  }
+}
