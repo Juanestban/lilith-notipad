@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 const httpClient: AxiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: process.env.NODE_ENV === 'production' ? '/lilith-notipad/api' : '/api',
   timeout: process.env.NODE_ENV === 'production' ? 60000 : 180000,
 });
 
