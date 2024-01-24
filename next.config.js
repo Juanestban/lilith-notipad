@@ -8,6 +8,7 @@ require('./config/mongoose');
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  basePath: '/lilith-notipad',
   env: {
     MONGODB_ATLAS_USERNAME: process.env.MONGODB_ATLAS_USERNAME,
     MONGODB_ATLAS_PASSWORD: process.env.MONGODB_ATLAS_PASSWORD,
