@@ -1,12 +1,12 @@
 const env = require('dotenv');
+const connect = require('./config/mongoose');
 
 env.config();
+connect();
 
-require('./config/mongoose');
-
-const isProduction = process.env.NODE_ENV === 'production' || process.env.GITHUB_ACTIONS
-const basePath = isProduction ? '/lilith-notipad' : '/'
-const assetPrefix = isProduction ? '/lilith-notipad/' : ''
+const isProduction = process.env.NODE_ENV === 'production' || process.env.GITHUB_ACTIONS;
+const basePath = isProduction ? '/lilith-notipad' : '/';
+const assetPrefix = isProduction ? '/lilith-notipad/' : '';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
