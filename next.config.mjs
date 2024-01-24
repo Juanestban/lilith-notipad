@@ -1,5 +1,6 @@
-const env = require('dotenv');
-const connect = require('./config/mongoose');
+import * as env from 'dotenv';
+
+import connect from './config/mongoose.mjs';
 
 env.config();
 connect();
@@ -21,4 +22,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
