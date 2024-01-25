@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "export": "next export",
     "gc": "node ./scripts/gen-component.js",
     "prepare": "husky install"
   },
