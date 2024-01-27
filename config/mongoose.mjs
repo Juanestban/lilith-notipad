@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
 const { MONGODB_ATLAS_USERNAME, MONGODB_ATLAS_PASSWORD, NODE_ENV } = process.env;
 const database = NODE_ENV === 'production' ? 'notipadDB' : 'notipadDB_development';
