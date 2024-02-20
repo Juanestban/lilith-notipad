@@ -1,8 +1,9 @@
 import * as env from 'dotenv';
+import path from 'node:path';
 
-import connect from './config/mongoose.mjs';
+import connect from './src/config/mongoose.mjs';
 
-env.config();
+env.config({ path: path.resolve(process.cwd(), '.env.local') });
 connect();
 
 /** @type {import('next').NextConfig} */
