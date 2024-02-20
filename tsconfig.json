@@ -1,33 +1,27 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "esnext", "ES2021"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
-      "@lilith/*": ["./*"],
-      "@lilith/components": ["./components"],
-      "@lilith/config/*": ["./config/*"],
-      "@lilith/contexts": ["./contexts"],
-      "@lilith/hooks": ["./hooks"],
-      "@lilith/interfaces": ["./interfaces"],
-      "@lilith/middlewares/*": ["./middlewares/*"],
-      "@lilith/models": ["./models"],
-      "@lilith/utils/*": ["./utils/*"],
-      "@lilith/libs/*": ["./libs/*"]
+      "@lilith/*": ["*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
