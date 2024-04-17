@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const { MONGODB_ATLAS_USERNAME, MONGODB_ATLAS_PASSWORD, NODE_ENV } = process.env;
 const database = NODE_ENV === 'production' ? 'notipadDB' : 'notipadDB_development';
-const urlMongo = `mongodb+srv://${MONGODB_ATLAS_USERNAME}:${MONGODB_ATLAS_PASSWORD}@lilith-notipad.qzy3ydb.mongodb.net/${database}?retryWrites=true&w=majority`;
+const urlMongo = `mongodb+srv://${MONGODB_ATLAS_USERNAME}:${MONGODB_ATLAS_PASSWORD}@lilith-notipad.qzy3ydb.mongodb.net/${database}?retryWrites=true&w=majority&directConnection=true&directConnection=true`;
 
 const connect = () => {
   mongoose
