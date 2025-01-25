@@ -27,39 +27,24 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      # Configurar el repositorio
       - name: Check out repository
         uses: actions/checkout@v3
-
-      # Configurar Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20 # Versión compatible con Next.js 12.2.5
+          node-version: 20
           cache: 'pnpm'
-
-      # Instalar pnpm
       - name: Install pnpm
-        run: npm install -g pnpm
-
-      # Verificar que pnpm está instalado
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
       - name: Verify pnpm installation
         run: pnpm --version
-
-      # Instalar dependencias con pnpm
       - name: Install dependencies
         run: pnpm install
-
-      # Construir la aplicación
       - name: Build Next.js app
         run: pnpm build
-
-      # Ejecutar pruebas (opcional)
-      - name: Run tests
-        run: pnpm test
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
