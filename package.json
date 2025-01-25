@@ -12,6 +12,7 @@
     "gc": "node ./scripts/gen-component.js",
     "prepare": "husky install"
   },
+  "packageManager": "pnpm@9.15.4",
   "dependencies": {
     "axios": "0.27.2",
     "bcrypt": "5.0.1",
