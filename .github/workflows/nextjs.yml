@@ -41,8 +41,12 @@ jobs:
           cache: 'pnpm'
 
       # Instalar pnpm
-      - name: Setup pnpm
+      - name: Install pnpm
         run: npm install -g pnpm
+
+      # Verificar que pnpm está instalado
+      - name: Verify pnpm installation
+        run: pnpm --version
 
       # Instalar dependencias con pnpm
       - name: Install dependencies
@@ -55,10 +59,6 @@ jobs:
       # Ejecutar pruebas (opcional)
       - name: Run tests
         run: pnpm test
-
-      # Analizar el uso del disco (opcional para depuración)
-      - name: Disk usage info
-        run: df -h
 
   deploy:
     needs: build
