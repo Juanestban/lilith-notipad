@@ -2,7 +2,7 @@ import { useState, useEffect, createContext, useContext, FormEvent } from 'react
 
 import httpClient from '@lilith/libs/httpClient';
 import { Note, NoteContextProps, NoteProviderProps, Edit } from '@lilith/interfaces';
-import { mockFc } from '@lilith/utils/mocks';
+import { noop } from '@lilith/utils/mocks';
 import { debounce } from '@lilith/utils/debounce';
 import { sortNotes } from '@lilith/utils/sortNotes';
 import { useSession } from '../SessionContext';
@@ -19,12 +19,12 @@ const NoteContext = createContext<NoteContextProps>({
   notes: [],
   loading: false,
   loadingSpinner: false,
-  handleChange: mockFc,
-  handleAdd: mockFc,
-  handleEdit: mockFc,
-  handleClear: mockFc,
-  handleSet: mockFc,
-  handleDelete: mockFc,
+  handleChange: noop,
+  handleAdd: noop,
+  handleEdit: noop,
+  handleClear: noop,
+  handleSet: noop,
+  handleDelete: noop,
 });
 
 function NoteProvider({ children }: NoteProviderProps) {

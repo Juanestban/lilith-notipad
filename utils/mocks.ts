@@ -1,1 +1,2 @@
-export const mockFc = () => {};
+/** noop: empty util function */
+export const noop = () => {};
