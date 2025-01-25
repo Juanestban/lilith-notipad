@@ -2,10 +2,11 @@ import mongoose from 'mongoose';
 
 const { MONGODB_ATLAS_USERNAME, MONGODB_ATLAS_PASSWORD, NODE_ENV } = process.env;
 const database = NODE_ENV === 'production' ? 'notipadDB' : 'notipadDB_development';
+const isProduction = NODE_ENV === 'production';
 const urlMongo = `mongodb+srv://${MONGODB_ATLAS_USERNAME}:${MONGODB_ATLAS_PASSWORD}@lilith-notipad.qzy3ydb.mongodb.net/${database}?retryWrites=true&w=majority`;
 
 mongoose
-  .connect(urlMongo, {
+  .connect(isProduction ? process.env.MONGODB_URI : urlMongo, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
