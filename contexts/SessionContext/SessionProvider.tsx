@@ -1,14 +1,14 @@
 import { createContext, useEffect, useState, useContext } from 'react';
 
 import { SessionProviderProps, SessionContextProps, UserSession } from '@lilith/interfaces';
-import { mockFc } from '@lilith/utils/mocks';
+import { noop } from '@lilith/utils/mocks';
 import { LOCAL_STORAGE_TOKEN, USER_INITIAL_STATE } from '@lilith/config/constants';
 import httpClient from '@lilith/libs/httpClient';
 
 const SessionContext = createContext<SessionContextProps>({
   user: USER_INITIAL_STATE,
   loading: false,
-  handleUser: mockFc,
+  handleUser: noop,
 });
 
 function SessionProvider({ children }: SessionProviderProps) {
