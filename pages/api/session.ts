@@ -4,11 +4,15 @@ import bycrypt from 'bcrypt';
 
 import httpServer from '@lilith/libs/httpServer';
 import { User } from '@lilith/models/User';
+import connect from '@lilith/config/mongoose.mjs';
 
 const POST = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { body } = req;
     const { password, username } = body;
+
+    await connect();
+
     const userFound = await User.findOne({ username });
     const { JWT_PASSWORD } = process.env;
     const message = 'this username not exist';
