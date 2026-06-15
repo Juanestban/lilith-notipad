@@ -4,6 +4,7 @@ import httpServer from '@lilith/libs/httpServer';
 import { withAuth } from '@lilith/middlewares/handleAuth';
 import { EpicApiRequest } from '@lilith/interfaces';
 import { Epic } from '@lilith/models/Epic';
+import connect from '@lilith/config/mongoose.mjs';
 
 const PATCH = async (req: EpicApiRequest, res: NextApiResponse) => {
   try {
@@ -11,6 +12,7 @@ const PATCH = async (req: EpicApiRequest, res: NextApiResponse) => {
     const { id: userId } = authJwt;
     const { id: idNote } = query;
 
+    await connect();
     const noteUpdated = await Epic.findByIdAndUpdate(idNote, body, { new: true }).where('userId').equals(userId);
     const { createdAt, updatedAt } = noteUpdated;
 
@@ -27,6 +29,7 @@ const DELETE = async (req: EpicApiRequest, res: NextApiResponse) => {
     const { id: userId } = authJwt;
     const { id: idNote } = query;
 
+    await connect();
     await Epic.findByIdAndDelete(idNote).where('userId').equals(userId);
 
     return res.status(200).json({ message: `the note (ObjectId:${idNote}) has deleted` });

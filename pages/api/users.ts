@@ -6,11 +6,14 @@ import { withAuth } from '@lilith/middlewares/handleAuth';
 import httpServer from '@lilith/libs/httpServer';
 import { User } from '@lilith/models/User';
 import { EpicApiRequest } from '@lilith/interfaces';
+import connect from '@lilith/config/mongoose.mjs';
 
 const GET = async (req: EpicApiRequest, res: NextApiResponse) => {
   try {
     const { authJwt } = req;
     const { id: userId } = authJwt;
+
+    await connect();
 
     const userFound = await User.findById(userId);
 
@@ -28,6 +31,9 @@ const POST = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { body } = req;
     const { password, username } = body;
+
+    await connect();
+
     const usernameValidation = await User.findOne({ username });
     const { JWT_PASSWORD } = process.env;
     const message = 'this username already exist';

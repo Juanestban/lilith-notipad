@@ -12,8 +12,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data | any>) {
   }
 
   if (req.method === 'POST') {
-    const epicNote = new Epic(req.body);
+    await connect();
 
+    const epicNote = new Epic(req.body);
     const savedEpicNote = await epicNote.save();
 
     return res.status(202).json(savedEpicNote);

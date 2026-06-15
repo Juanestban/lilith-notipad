@@ -4,11 +4,15 @@ import httpServer from '@lilith/libs/httpServer';
 import { withAuth } from '@lilith/middlewares/handleAuth';
 import { EpicApiRequest } from '@lilith/interfaces';
 import { Epic } from '@lilith/models/Epic';
+import connect from '@lilith/config/mongoose.mjs';
 
 const GET = async (req: EpicApiRequest, res: NextApiResponse) => {
   try {
     const { authJwt } = req;
     const { id: userId } = authJwt;
+
+    await connect();
+
     const epicNotes = await Epic.find({ userId });
 
     return res.status(200).json(epicNotes ?? []);
@@ -22,6 +26,9 @@ const POST = async (req: EpicApiRequest, res: NextApiResponse) => {
   try {
     const { body, authJwt } = req;
     const { id } = authJwt;
+
+    await connect();
+
     const epicNote = new Epic({ ...body, userId: id });
 
     const noteSaved = await epicNote.save();
